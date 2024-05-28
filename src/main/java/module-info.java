@@ -11,6 +11,7 @@ module org.intelimusi.intelimusifxplus {
     requires eu.hansolo.tilesfx;
     requires javafx.graphics;
     requires javafx.media;
+    requires java.net.http;
 
     opens org.intelimusi.intelimusifxplus to javafx.fxml;
     exports org.intelimusi.intelimusifxplus;
