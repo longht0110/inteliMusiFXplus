@@ -1,0 +1,11 @@
+.button-glow {
+    -fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.8), 10, 0, 0, 0);
+}
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/Roboto-Regular.ttf') format('truetype');
+}
+
+.root {
+    -fx-font-family: 'Roboto';
+}
