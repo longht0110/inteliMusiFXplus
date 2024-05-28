@@ -191,16 +191,6 @@ public class MusicPlayerController {
         }
     }
 
-    public void stop() {
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
-            songLabel.setText("");
-            progressBar.setProgress(0);
-            isPlaying = false;
-            playPauseImageView.setImage(playImage); // Chuyển sang icon Play
-        }
-    }
-
     public void next() {
         if (mediaPlayer != null && !musicFiles.isEmpty()) {
             int currentTrackIndex = getCurrentTrackIndex();
