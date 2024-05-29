@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
@@ -36,6 +37,9 @@ public class MusicPlayerController {
     private ListView<String> playlistView; // Khai báo playlistView
     @FXML
     private Button selectFolderButton; // Khai báo nút chọn thư mục
+    @FXML
+    private MediaView videoView;
+    private MediaPlayer videoPlayer;
 
     private MediaPlayer mediaPlayer;
     private ImageView playPauseImageView; // Biến ImageView cho nút Play/Pause
@@ -143,7 +147,7 @@ public class MusicPlayerController {
         File[] listFiles = folder.listFiles();
         if (listFiles != null) {
             for (File file : listFiles) {
-                if (file.isFile() && (file.getName().endsWith(".mp3") || file.getName().endsWith(".wav"))) {
+                if (file.isFile() && (file.getName().endsWith(".mp3") || file.getName().endsWith(".wav") || file.getName().endsWith(".mp4"))) {
                     files.add(file);
                 }
             }
@@ -177,7 +181,6 @@ public class MusicPlayerController {
             mediaPlayer.play();
             isPlaying = true; // Cập nhật trạng thái
             playPauseImageView.setImage(pauseImage); // Chuyển sang icon Pause
-            songLabel.setText(mediaPlayer.getMedia().getSource());
         }
     }
 
@@ -185,7 +188,6 @@ public class MusicPlayerController {
     private void pause() {
         if (mediaPlayer != null && mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
             mediaPlayer.pause();
-            songLabel.setText("Tạm dừng");
             isPlaying = false; // Cập nhật trạng thái
             playPauseImageView.setImage(playImage); // Chuyển sang icon Play
         }
@@ -231,30 +233,26 @@ public class MusicPlayerController {
         String filePath = file.toURI().toString();
         Media media = new Media(filePath);
 
-        // Kiểm tra xem mediaPlayer đã được khởi tạo hay chưa
+        // Nếu đã có mediaPlayer, hãy dừng trước khi phát file mới
         if (mediaPlayer != null) {
-            mediaPlayer.stop(); // Dừng bài hát hiện tại
+            mediaPlayer.stop();
         }
 
-        mediaPlayer = new MediaPlayer(media); // Tạo MediaPlayer mới
+        mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setOnReady(() -> {
-            songLabel.setText(file.getName()); // Hiển thị tên bài hát
+            songLabel.setText(file.getName());
         });
+
         mediaPlayer.setOnError(() -> {
             System.out.println("Lỗi MediaPlayer: " + mediaPlayer.getError().getMessage());
         });
+
         mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
             progressBar.setProgress(mediaPlayer.getCurrentTime().toSeconds() / mediaPlayer.getTotalDuration().toSeconds());
         });
+
         mediaPlayer.play();
         isPlaying = true;
         playPauseImageView.setImage(pauseImage);
-    }
-
-    public void applyStyles(Stage stage) {
-        Scene scene = stage.getScene();
-        if (scene != null) {
-            scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
-        }
     }
 }
