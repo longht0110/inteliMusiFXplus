@@ -1,27 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.media.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.effect.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.media.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.media.MediaView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.effect.GaussianBlur?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.effect.MotionBlur?>
+<?import javafx.scene.effect.BoxBlur?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.shape.Circle?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: EEF7FF;" stylesheets="@/styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.intelimusi.intelimusifxplus.MusicPlayerController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: EEF7FF;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.intelimusi.intelimusifxplus.MusicPlayerController">
     <children>
         <MediaView fx:id="videoView" fitHeight="720.0" fitWidth="1280.0" preserveRatio="true">
-         <effect>
-            <GaussianBlur />
-         </effect></MediaView>
-        <ListView fx:id="playlistView" layoutX="270.0" layoutY="228.0" prefHeight="417.0" prefWidth="1010.0" style="-fx-background-color: transparent;" />
+            <effect>
+                <GaussianBlur />
+            </effect>
+        </MediaView>
+
         <AnchorPane prefHeight="645.0" prefWidth="270.0" style="-fx-background-color: CDE8E5;" />
         <AnchorPane layoutY="645.0" prefHeight="75.0" prefWidth="1280.0" style="-fx-background-color: #7AB2B2;">
             <children>
@@ -47,7 +62,8 @@
                     </padding>
                     <effect>
                         <DropShadow color="#fff9f9" height="50.05" radius="30.175" spread="0.62" width="72.65" />
-                    </effect></Label>
+                    </effect>
+                </Label>
 
                 <ProgressBar id="progressBar" fx:id="progressBar" layoutX="442.0" layoutY="38.0" prefHeight="27.0" prefWidth="443.0" progress="0.0" style="-fx-pref-height: 10px;">
                     <effect>
@@ -66,15 +82,26 @@
                     </right>
                 </BorderPane>
                 <Circle fx:id="musicImage" fill="DODGERBLUE" layoutX="48.0" layoutY="37.0" radius="26.0" stroke="BLACK" strokeType="INSIDE" />
-                <Button fx:id="selectFolderButton" layoutX="1150.0" layoutY="15.0" mnemonicParsing="false" onAction="#selectFolder" text="Chọn thư mục">
+                <Button fx:id="selectFolderButton" layoutX="1149.0" layoutY="26.0" mnemonicParsing="false" onAction="#selectFolder" text="Chọn thư mục">
                     <font>
                         <Font size="12.0" />
                     </font>
                 </Button>
             </children>
-            <effect>
-                <DropShadow color="#87c3c3" height="79.1" radius="24.525" spread="0.33" />
-            </effect>
         </AnchorPane>
+
+                    <VBox layoutX="270.0" layoutY="228.0" prefHeight="417.0" prefWidth="1010.0" style="-fx-background-color: transparent;">
+   <children>
+               <ScrollPane fitToWidth="true" prefHeight="417.0" prefWidth="1010.0">
+                  <content>
+                      <VBox fx:id="playlistBox" spacing="10">
+                          <padding>
+                              <Insets top="10" />
+                          </padding>
+                      </VBox>
+                  </content>
+               </ScrollPane>
+   </children>
+        </VBox>
     </children>
 </AnchorPane>

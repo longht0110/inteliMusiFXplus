@@ -3,6 +3,7 @@ package org.intelimusi.intelimusifxplus;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,6 +11,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -34,7 +38,7 @@ public class MusicPlayerController {
     @FXML
     private ProgressBar progressBar;
     @FXML
-    private ListView<String> playlistView; // Khai báo playlistView
+    private VBox playlistBox; // Thay thế ListView bằng VBox để chứa các Card    @FXML
     @FXML
     private Button selectFolderButton; // Khai báo nút chọn thư mục
     @FXML
@@ -51,17 +55,6 @@ public class MusicPlayerController {
 
     @FXML
     public void initialize() {
-        playlistView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                // Lấy vị trí của bài hát được chọn
-                int selectedIndex = playlistView.getSelectionModel().getSelectedIndex();
-                if (selectedIndex >= 0 && selectedIndex < musicFiles.size()) {
-                    // Phát bài hát được chọn
-                    playTrack(musicFiles.get(selectedIndex));
-                }
-            }
-        });
-
         // Khởi tạo images cho nút Play/Pause
         playImage = new Image(getClass().getResource("/images/play-icon.png").toExternalForm());
         pauseImage = new Image(getClass().getResource("/images/pause-icon.png").toExternalForm());
@@ -155,13 +148,40 @@ public class MusicPlayerController {
         return files;
     }
 
-    // Phương thức updatePlaylistView
     private void updatePlaylistView() {
-        ObservableList<String> playlistItems = FXCollections.observableArrayList();
+        playlistBox.getChildren().clear();
         for (File file : musicFiles) {
-            playlistItems.add(file.getName());
+            playlistBox.getChildren().add(createSongCard(file));
         }
-        playlistView.setItems(playlistItems);
+    }
+
+    // Phương thức tạo Card cho mỗi bài hát
+    private Region createSongCard(File file) {
+        HBox songCard = new HBox(10);
+        songCard.getStyleClass().add("songCard"); // Thêm dòng này
+        songCard.setPadding(new Insets(5));
+        songCard.setStyle("-fx-background-color: white; -fx-background-radius: 5;");
+
+        // Phần ảnh bìa
+        Image placeholderImage = new Image(getClass().getResource("/images/music-placeholder.png").toExternalForm());
+        ImageView albumArtView = new ImageView(placeholderImage); // Giả sử ảnh placeholder
+        albumArtView.setFitHeight(50);
+        albumArtView.setFitWidth(50);
+
+        // Phần thông tin bài hát
+        VBox songInfo = new VBox(5);
+        Label songTitle = new Label(file.getName());
+        songTitle.setStyle("-fx-font-weight: bold;");
+        Label songArtist = new Label("Unknown Artist"); // Giả sử chưa có thông tin nghệ sĩ
+        Label songDuration = new Label("0:00"); // Giả sử chưa có thông tin thời lượng
+
+        songInfo.getChildren().addAll(songTitle, songArtist, songDuration);
+
+        // Thêm sự kiện click để phát nhạc
+        songCard.setOnMouseClicked(event -> playTrack(file));
+
+        songCard.getChildren().addAll(albumArtView, songInfo);
+        return songCard;
     }
 
     // Các phương thức xử lý sự kiện
